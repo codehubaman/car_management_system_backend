@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const cors = require('cors');
 const bodyParser = require('body-parser');
+const cors = require('cors');  // Import CORS
 
 dotenv.config();
 
@@ -22,8 +22,12 @@ app.use(cors({
             return callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true,  // Allow credentials such as cookies or headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Allow the Authorization header
+    credentials: true,  // Allow cookies to be sent along with requests if needed
 }));
+
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch((err) => console.log(err));
